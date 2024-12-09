@@ -21,13 +21,13 @@ vagrant up
 # 설치가 완료된 후 reload
 vagrant reload
 
-# vagrant 사용자 초기 패스워드 : asdf 
+# 사용자명과 초기 패스워드 : user1/asdf 
 ```
 
 ## Control Plane 역할의 VM(마스터) 초기화
 ```sh
-# ssh 로 접속. vagrant/asdf 로 로그인
-ssh vagrant@192.168.56.201
+# ssh 로 접속. user1/asdf 로 로그인
+ssh user1@192.168.56.201
 ```
 ```sh
 # kubeadm을 이용한 k8s cluster 초기화
@@ -45,7 +45,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```sh
 ## calico CNI 설치
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/tigera-operator.yaml
-kubectl apply -f ~/vagrant-file/conf/calico-resources.yaml
+kubectl apply -f ~/vagrant/conf/calico-resources.yaml
 
 ## 설치 확인
 $ kubectl get pods --all-namespaces
@@ -70,7 +70,7 @@ tigera-operator    tigera-operator-576646c5b6-6h5t5           1/1     Running   
 
 ```sh
 # worker1에서 작업
-$ ssh vagrant@192.168.56.202
+$ ssh user1@192.168.56.202
 
 ```
 ```sh
@@ -87,7 +87,7 @@ $ sudo kubeadm join 192.168.56.201:6443 --token <token> --discovery-token-ca-cer
 #### 로컬 컴퓨터에 3노드 k8s 클러스터 구성 완료 확인
 ```sh
 # master 접속
-$ ssh vagrant@192.168.56.201
+$ ssh user1@192.168.56.201
 
 $ kubectl get nodes
 NAME      STATUS   ROLES           AGE     VERSION
@@ -163,7 +163,7 @@ replicaset.apps/controller-6dd967fdc7   1         1         1       34m=
 
 #### External IP로 사용할 IP Address Pool 과 L2 Advertisement 설정
 ```sh
-$ cat ~/vagrant-file/conf/ip-addr-pool.yaml
+$ cat ~/vagrant/conf/ip-addr-pool.yaml
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -188,13 +188,13 @@ spec:
   - matchLabels:
       kubernetes.io/hostname: worker2
 
-$ kubectl apply -f ~/vagrant-file/conf/ip-addr-pool.yaml
+$ kubectl apply -f ~/vagrant/conf/ip-addr-pool.yaml
 ```
 
 #### LoadBalancer 테스트
 ```sh
-$ kubectl apply -f ~/vagrant-file/conf/deployment.yaml
-$ kubectl apply -f ~/vagrant-file/conf/svc-lb.yaml
+$ kubectl apply -f ~/vagrant/conf/deployment.yaml
+$ kubectl apply -f ~/vagrant/conf/svc-lb.yaml
 
 $ kubectl get all
 $ kubectl get all
@@ -227,8 +227,8 @@ $ curl http://192.168.56.51
 
 #### 테스트 deployment, sercice 삭제
 ```sh
-$ kubectl delete -f ~/vagrant-file/conf/deployment.yaml
-$ kubectl delete -f ~/vagrant-file/conf/svc-lb.yaml
+$ kubectl delete -f ~/vagrant/conf/deployment.yaml
+$ kubectl delete -f ~/vagrant/conf/svc-lb.yaml
 ```
 ---
 
@@ -289,11 +289,11 @@ $ sudo vi /etc/hosts
 # nodeapp1.yaml : /path1/* 패턴에 대한 요청 처리 애플리케이션
 # nodeapp2.yaml : /path2/* 패턴에 대한 요청 처리 애플리케이션
 
-$ kubectl apply -f ~/vagrant-file/conf/nodeapp1.yaml
-$ kubectl apply -f ~/vagrant-file/conf/nodeapp2.yaml
+$ kubectl apply -f ~/vagrant/conf/nodeapp1.yaml
+$ kubectl apply -f ~/vagrant/conf/nodeapp2.yaml
 
 # ingress 파일 편집 : host 필드의 값을 앞에서 hosts 파일에 등록한 hostname(demo.example.com) 으로 변경
-$ cat ~/vagrant-file/conf/nodeapp-ingress.yaml
+$ cat ~/vagrant/conf/nodeapp-ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -322,7 +322,7 @@ spec:
               number: 8080
 
 # ingresss 적용하기
-$ kubectl apply -f ~/vagrant-file/conf/nodeapp-ingress.yaml
+$ kubectl apply -f ~/vagrant/conf/nodeapp-ingress.yaml
 ```
 
 #### hosts 파일을 등록한 Host 또는 master 노드에서 다음과 같이 요청해보기
@@ -344,9 +344,9 @@ $ curl http://demo.example.com/path2/abc
 
 #### 리소스 삭제
 ```sh
-kubectl delete -f ~/vagrant-file/conf/nodeapp1.yaml
-kubectl delete -f ~/vagrant-file/conf/nodeapp2.yaml
-kubectl delete -f ~/vagrant-file/conf/nodeapp-ingress.yaml
+kubectl delete -f ~/vagrant/conf/nodeapp1.yaml
+kubectl delete -f ~/vagrant/conf/nodeapp2.yaml
+kubectl delete -f ~/vagrant/conf/nodeapp-ingress.yaml
 kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.3/deploy/static/provider/baremetal/deploy.yaml
 
 ```
