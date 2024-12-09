@@ -225,7 +225,7 @@ $ curl http://192.168.56.51
   </div>
 ```
 
-#### 테스트 deployment, sercice 삭제
+#### 테스트용 deployment, sercice 삭제
 ```sh
 $ kubectl delete -f ~/vagrant/conf/deployment.yaml
 $ kubectl delete -f ~/vagrant/conf/svc-lb.yaml
