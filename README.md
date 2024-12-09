@@ -45,7 +45,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```sh
 ## calico CNI 설치
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/tigera-operator.yaml
-kubectl create -f /vagrant/conf/custom-resources.yaml
+kubectl create -f /vagrant/conf/calico-resources.yaml
 
 ## 설치 확인
 $ kubectl get pods --all-namespaces
