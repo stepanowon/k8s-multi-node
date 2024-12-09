@@ -2,4 +2,5 @@
 
 set -euo pipefail
 
-cp -r /vagrant/conf /home/vagrant/
+cp -r /vagrant /home/vagrant/vagrant-file
+chwon -R vagrant:vagrant /home/vagrant/vagrant-file
