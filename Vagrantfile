@@ -62,8 +62,8 @@ Vagrant.configure("2") do |config|
       "args" => ["eth1"]
     },
     {
-      "name" => "change-vagrant-passwd",
-      "path" => "scripts/change-vagrant-passwd.sh",
+      "name" => "user-script",
+      "path" => "scripts/user-script.sh",
     },
     {
       "name" => "sample-copy",
