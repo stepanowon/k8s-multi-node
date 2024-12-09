@@ -64,6 +64,10 @@ Vagrant.configure("2") do |config|
     {
       "name" => "change-vagrant-passwd",
       "path" => "scripts/change-vagrant-passwd.sh",
+    },
+    {
+      "name" => "sample-copy",
+      "path" => "scripts/sample-copy.sh",
     }
   ]
 
