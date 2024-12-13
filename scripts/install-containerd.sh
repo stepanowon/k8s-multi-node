@@ -11,7 +11,7 @@ cleanup() {
 
 trap cleanup EXIT SIGINT SIGTERM
 
-CONTAINERD_VERSION="1.6.36"
+CONTAINERD_VERSION="1.7.24"
 curl -LfsS https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz -o containerd.tar.gz
 tar Cxzvf /usr/local containerd.tar.gz
 
@@ -28,11 +28,11 @@ cp -v /vagrant/conf/containerd.service /usr/local/lib/systemd/system/containerd.
 systemctl daemon-reload
 systemctl enable --now containerd
 
-RUNC_VERSION="1.1.14"
+RUNC_VERSION="1.2.2"
 curl -LfsSO https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64
 install -o root -g root -m 755 runc.amd64 /usr/local/sbin/runc
 
-CNI_PLUGINS_VERSION="1.5.1"
+CNI_PLUGINS_VERSION="1.6.1"
 curl -LfsS https://github.com/containernetworking/plugins/releases/download/v${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-v${CNI_PLUGINS_VERSION}.tgz -o cni-plugins.tgz
 mkdir -p /opt/cni/bin
 tar Cxzvf /opt/cni/bin cni-plugins.tgz

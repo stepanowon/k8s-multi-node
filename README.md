@@ -121,6 +121,19 @@ kube-system        kube-scheduler-master                      1/1     Running   
 tigera-operator    tigera-operator-576646c5b6-d4hdt           1/1     Running   0               4m47s
 ```
 
+## kernel:watchdog: BUG : soft lockup - CPU#0 stuck for xxs [containerd-shim:xxx] 메시지 발생시 조치
+```sh
+$ sudo cp /lib/systemd/system/systemd-logind.service /etc/systemd/system/
+
+# /etc/systemd/system/systemd-logind.service 편집
+# IPAddressDeny=any 를 IPAddressDeny= 로 변경
+$ sudo vi /etc/systemd/system/systemd-logind.service 
+
+# daemon reload & 서비스 재시작
+$ sudo systemctl daemon-reload 
+$ sudo systemctl restart systemd-logind.service
+```
+
 ---
 ## metalLB 설치 (v0.14.8 기준)
 
@@ -354,3 +367,4 @@ kubectl delete -f ~/vagrant/conf/nodeapp-ingress.yaml
 kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.3/deploy/static/provider/baremetal/deploy.yaml
 
 ```
+
