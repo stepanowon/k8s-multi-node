@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
       node.vm.network "private_network", ip: "192.168.56.#{201 + i}"
       node.vm.provider "virtualbox" do |vb|
         vb.cpus = 1
+        vb.memory = 2048
       end
       node.vm.provision "shell" do |s|
         s.name = "configure-firewall"
